@@ -1,0 +1,90 @@
+/*
+题目：写一个字符串转换函数
+输入：以驼峰命名法为格式的字符串，
+输出：相应的以下划线命名法为格式的字符串
+
+要求：
+1. 只遍历输入字符串一遍
+2. 注意合理处理连续的大写字母如 HTTP
+3. 请提供单元测试，包括但不限于下面的用例。提示：用例覆盖得全不全也是考点之一
+4. 语言不限
+
+例子 1
+输入：myFirstName
+输出：my_first_name
+
+
+例子 2
+输入：OnlineUsers
+输出：online_users
+
+
+例子 3
+输入：Address
+输出：address
+
+
+例子 4
+输入：validHTTPRequest
+输出：valid_http_request
+*/
+
+
+import java.util.*;
+
+public class CameltoUnderline{
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+        String line = sc.nextLine();
+        
+		StringBuilder builder = new StringBuilder();
+        
+        int r = 0; int l = 0;        //双指针法
+        for(; r < line.length(); r++){        //单次遍历
+			if(Character.isUpperCase(line.charAt(r))){
+                if(!Character.isUpperCase(line.charAt(r + 1))){        //若不为连续大写，判断大写字母是否为首字母
+                    if(r == 0){
+                        builder.append(Character.toLowerCase(line.charAt(r)));
+                    }
+                    else{
+                    builder.append('_');
+                    builder.append(Character.toLowerCase(line.charAt(r)));
+                        }
+                }
+                else{                                                  //若为连续大写，则继续往下判别大写区间
+                    l = r + 1;    //左指针指向下一个连续字符
+                    while(l < line.length() && Character.isUpperCase(line.charAt(l))){
+                        l++;
+                        }
+                                                                      //确认区间后，判断此区间处于头部、尾部或中间，对应处理方式
+                        if(r == 0 && l == line.length()){
+                        builder.append(line.substring(r,l).toLowerCase());
+                        r = l;
+                        }
+                        else if(r == 0 && l != line.length()){
+                            builder.append(line.substring(r,l - 1).toLowerCase()+ '_');
+                        r = l - 2;
+                        }
+                        else if(r != 0 && l == line.length()){
+                        builder.append('_');
+                        builder.append(line.substring(r,l).toLowerCase());
+                        r = l;
+                        }
+                        else{
+                        builder.append('_');
+                        builder.append(line.substring(r,l - 1).toLowerCase() + '_');
+                        r = l - 2;
+                        }
+                }
+            }
+            else {    //未检测到大写字母
+                builder.append(line.charAt(r));
+            }
+        }
+		System.out.println(builder);
+	}
+}
+
+
