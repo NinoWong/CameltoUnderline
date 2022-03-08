@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class CameltoUnderline{
+public class Main{
 
 	public static void main(String[] args) {
 		
@@ -12,7 +12,16 @@ public class CameltoUnderline{
         int r = 0; int l = 0;        //双指针法
         for(; r < line.length(); r++){        //单次遍历
 			if(Character.isUpperCase(line.charAt(r))){
-                if(!Character.isUpperCase(line.charAt(r + 1))){        //若不为连续大写，判断大写字母是否为首字母
+                if(r + 1 >= line.length()){
+                    if(r == 0){
+                        builder.append(Character.toLowerCase(line.charAt(r)));
+                    }
+                    else{
+                    builder.append('_');
+                    builder.append(Character.toLowerCase(line.charAt(r)));
+                        }
+                }
+                else if(!Character.isUpperCase(line.charAt(r + 1))){        //若不为连续大写，判断大写字母是否为首字母
                     if(r == 0){
                         builder.append(Character.toLowerCase(line.charAt(r)));
                     }
@@ -32,7 +41,7 @@ public class CameltoUnderline{
                         r = l;
                         }
                         else if(r == 0 && l != line.length()){
-                            builder.append(line.substring(r,l - 1).toLowerCase()+ '_');
+                            builder.append(line.substring(r,l - 1).toLowerCase());
                         r = l - 2;
                         }
                         else if(r != 0 && l == line.length()){
@@ -42,7 +51,7 @@ public class CameltoUnderline{
                         }
                         else{
                         builder.append('_');
-                        builder.append(line.substring(r,l - 1).toLowerCase() + '_');
+                        builder.append(line.substring(r,l - 1).toLowerCase());
                         r = l - 2;
                         }
                 }
